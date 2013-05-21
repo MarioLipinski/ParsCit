@@ -143,7 +143,7 @@ sub execute {
 }
 
 sub newTmpFile {
-  my $tmpFile = `date '+%Y%m%d-%H%M%S-$$'`;
-  chomp($tmpFile);
-  return $tmpFile;
+	my (undef, $tmpfile) = tempfile('tempXXXXXXXX');
+	chomp  $tmpfile;
+	return $tmpfile;
 }

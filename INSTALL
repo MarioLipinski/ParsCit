@@ -24,6 +24,7 @@ ParsCit use the following Perl libraries from CPAN
 - Getopt::Std
 - File::Basename
 - File::Spec
+- File::Util
 - FindBin
 - HTML::Entities
 - IO::File

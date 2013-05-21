@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'find'
+require 'tmpdir'
 # Emma
 
 pwd = File.dirname(__FILE__)
@@ -7,7 +8,7 @@ pwd = File.dirname(__FILE__)
 @CRFPP  = ENV['CRFPP_HOME'] ? "#{ENV['CRFPP_HOME']}/bin" : "#{pwd}/../../crfpp"
 @SRC    = "#{pwd}/genericSect"
 @DATA   = "#{pwd}/../../resources/sectLabel/"
-@TEST_DIR = "/tmp/"
+@TEST_DIR = Dir.tmpdir()
 
 require "#{@SRC}/forceUtf8"
 

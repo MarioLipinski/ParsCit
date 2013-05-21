@@ -13,6 +13,7 @@ use utf8;
 use strict 'vars';
 
 use FindBin;
+use File::Util;
 use Encode ();
 
 use Omni::Config;
@@ -20,7 +21,7 @@ use ParsCit::Config;
 
 ### USER customizable section
 my $tmp_dir		= $ParsCit::Config::tmpDir;
-$tmp_dir		= "$FindBin::Bin/../$tmp_dir";
+$tmp_dir		= File::Spec->catdir($FindBin::Bin, '..', $tmp_dir);
 
 my $dict_file	= $ParsCit::Config::dictFile;
 $dict_file		= "$FindBin::Bin/../$dict_file";
@@ -682,7 +683,7 @@ sub PrepData
 
 	# Generate a temporary file
     my $tmpfile = BuildTmpFile($filename);
-
+	
 	###
 	# Thang Mar 10: move inside the method, only load when running
 	###
@@ -690,7 +691,7 @@ sub PrepData
 
     unless (open(TMP, ">:utf8", $tmpfile)) 
 	{
-		fatal("Could not open tmp file " . $tmp_dir . "/" . $tmpfile . " for writing.");
+		die("Could not open tmp file " . $tmp_dir . "/" . $tmpfile . " for writing.");
       	return;
     }
 
@@ -982,19 +983,17 @@ sub PrepData
 sub BuildTmpFile 
 {
     my ($filename) = @_;
+	
+	my $SL = quotemeta(File::Util->SL);
 
     my $tmpfile	= $filename;
-    $tmpfile	=~ s/[\.\/]//g;
+    $tmpfile	=~ s/[\.$SL]//g;
     $tmpfile	.= $$ . time;
 
 	# Untaint tmpfile variable
     if ($tmpfile =~ /^([-\@\w.]+)$/) { $tmpfile = $1; }
     
-	###
-	# Altered by Min (Thu Feb 28 13:08:59 SGT 2008)
-	###
-    return "/tmp/$tmpfile"; 
-    # return $tmpfile;
+    return $tmpfile;
 }
 
 sub Fatal 

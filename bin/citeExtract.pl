@@ -33,12 +33,10 @@ use Getopt::Std;
 use strict 'vars';
 use lib $FindBin::Bin . "/../lib";
 
-use lib "/home/wing.nus/tools/languages/programming/perl-5.10.0/lib/5.10.0";
-use lib "/home/wing.nus/tools/languages/programming/perl-5.10.0/lib/site_perl/5.10.0";
-
 # Dependencies
 use File::Spec;
 use File::Basename;
+use File::Temp qw/ tempfile tempdir /;
 
 # Local libraries
 use Omni::Omnidoc;
@@ -54,7 +52,7 @@ $tmpfile	.= $$ . time;
 # Untaint tmpfile variable
 if ($tmpfile =~ /^([-\@\w.]+)$/) { $tmpfile = $1; }
 
-$tmpfile		= "/tmp/" . $tmpfile;
+$tmpfile		= tempfile($tmpfile . 'XXXX');
 $0				=~ /([^\/]+)$/;
 my $progname	= $1;
 
@@ -553,10 +551,7 @@ sub BiblioScript
 # Method to generate tmp file name
 sub NewTmpFile 
 {
-	my $tmpfile	= `date '+%Y%m%d-%H%M%S-$$'`;
+	my (undef, $tmpfile) = tempfile('tempXXXXXXXX');
 	chomp  $tmpfile;
 	return $tmpfile;
 }
-
-
-

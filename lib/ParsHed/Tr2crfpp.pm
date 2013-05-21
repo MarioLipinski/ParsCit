@@ -11,6 +11,7 @@ package ParsHed::Tr2crfpp;
 use strict 'vars';
 use utf8;
 use FindBin;
+use File::Temp qw/ tempfile tempdir /;
 use ParsHed::Config;
 use Encode ();
 
@@ -320,7 +321,8 @@ sub generateTokenFeature {
 sub buildTmpFile {
     my ($filename) = @_;
     my $tmpfile = $filename;
-    $tmpfile =~ s/[\.\/]//g;
+	my $SL = quotemeta(File::Util->SL);
+    $tmpfile =~ s/[\.$SL]//g;
     $tmpfile .= $$ . time;
     # untaint tmpfile variable
     if ($tmpfile =~ /^([-\@\w.]+)$/) {
@@ -328,7 +330,7 @@ sub buildTmpFile {
     }
     
     # return $tmpfile;
-    return "/tmp/$tmpfile"; # Altered by Min (Thu Feb 28 13:08:59 SGT 2008)
+    return tempfile($tmpfile . 'XXXX');
 
 }  # buildTmpFile
 

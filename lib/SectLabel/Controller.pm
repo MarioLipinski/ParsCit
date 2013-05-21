@@ -18,6 +18,7 @@ use strict;
 
 # Dependencies
 use FindBin;
+use File::Temp qw/ tempfile tempdir /;
 
 # Local libraries
 use SectLabel::Config;
@@ -25,7 +26,7 @@ use SectLabel::Tr2crfpp;
 use SectLabel::PostProcess;
 use CSXUtil::SafeText qw(cleanXML);
 
-my $generic_sect_path = $FindBin::Bin . "/sectLabel/genericSectExtract.rb";
+my $generic_sect_path = File::Spec->catfile(($FindBin::Bin, 'sectLabel'), 'genericSectExtract.rb');
 
 ###
 # Main API method for generating an XML document including all
@@ -210,9 +211,9 @@ sub GetGenericHeaders
 	my $num_headers = scalar(@{ $headers });
 
 	# Put the list of headers to file
-  	my $header_file = "/tmp/" . NewTmpFile();
+  	my $header_file = NewTmpFile();
 
-  	$generic_sect_path = UntaintPath($generic_sect_path);
+  	#$generic_sect_path = UntaintPath($generic_sect_path);
 	
 	open(OF, ">:utf8", $header_file);
 	for (my $i = 0; $i < $num_headers; $i++) { print OF $headers->[$i] . "\n"; }
@@ -322,7 +323,7 @@ sub UntaintPath
 ###
 sub NewTmpFile 
 {
-	my $tmpfile = `date '+%Y%m%d-%H%M%S-$$'`;
+	my (undef, $tmpfile) = tempfile('tempXXXXXXXX');
 
 	chomp($tmpfile);
 	$tmpfile = UntaintPath($tmpfile);

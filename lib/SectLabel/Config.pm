@@ -1,5 +1,7 @@
 package SectLabel::Config;
 
+use File::Spec;
+
 $algorithmName		= "SectLabel";
 $algorithmVersion	= "110505";
 
@@ -11,16 +13,16 @@ $tmpDir			= "tmp";
 $dictFile		= "resources/parsCitDict.txt";
 $funcFile		= "resources/sectLabel/funcWord";
 
-$crf_test = $ENV{'CRFPP_HOME'} ? "$ENV{'CRFPP_HOME'}/bin/crf_test" : "crfpp/crf_test";
+$crf_test = $ENV{'CRFPP_HOME'} ? File::Spec->catfile(($ENV{'CRFPP_HOME'}, 'bin'), 'crf_test.exe') : File::Spec->catfile(('crfpp'), 'crf_test.exe');
 
-$modelFile		= "resources/sectLabel/sectLabel.model";
-$modelXmlFile	= "resources/sectLabel/sectLabel.modelXml.v2";
-$configFile		= "resources/sectLabel/sectLabel.config";
-$configXmlFile	= "resources/sectLabel/sectLabel.configXml";
+$modelFile		= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.model');
+$modelXmlFile	= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.modelXml.v2');
+$configFile		= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.config');
+$configXmlFile	= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.configXml');
 
-$autFile		= "resources/sectLabel/author.model";
-$affFile		= "resources/sectLabel/affiliation.model";
-$matFile		= "resources/sectLabel/aamatch.model";
+$autFile		= File::Spec->catfile(('resources', 'sectLabel'), 'author.model');
+$affFile		= File::Spec->catfile(('resources', 'sectLabel'), 'affiliation.model');
+$matFile		= File::Spec->catfile(('resources', 'sectLabel'), 'aamatch.model');
 
 ###
 # Thang v100401: note the keyword feature and configs below are not currently 

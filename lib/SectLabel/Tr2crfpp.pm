@@ -14,13 +14,16 @@ use strict 'vars';
 
 # Dependencies
 use FindBin;
+use File::Spec;
+use File::Temp qw/ tempfile /;
+use File::Util;
 use Encode ();
 
 # Local libraries
 use SectLabel::Config;
 
 ### USER customizable section
-my $crf_test	= $ENV{'CRFPP_HOME'} ? "$ENV{'CRFPP_HOME'}/bin/crf_test" : "$FindBin::Bin/../$SectLabel::Config::crf_test";
+my $crf_test	= $ENV{'CRFPP_HOME'} ? File::Spec->catfile(($ENV{'CRFPP_HOME'}, 'bin'), 'crf_test') : File::Spec->catfile(($FindBin::Bin, '..'), $SectLabel::Config::crf_test);
 ### END user customizable section
 
 my %dict		= ();
@@ -1069,8 +1072,9 @@ sub BuildTmpFile
     my ($filename) = @_;
 	
 	my $tmpfile = $filename;
-    $tmpfile 	=~ s/[\.\/]//g;
-    $tmpfile 	.= $$ . time;
+	my $SL = quotemeta(File::Util->SL);
+    $tmpfile 	=~ s/[\.$SL]//g;
+    $tmpfile 	.= $$ . 'XXXXXXXXXX';
     
 	# Untaint tmpfile variable
     if ($tmpfile =~ /^([-\@\w.]+)$/) 
@@ -1078,7 +1082,9 @@ sub BuildTmpFile
 		$tmpfile = $1;
     }
     
-    return "/tmp/$tmpfile"; # Altered by Min (Thu Feb 28 13:08:59 SGT 2008)
+	my $tempfile;
+	(undef, $tempfile) = tempfile($tmpfile);
+    return $tempfile;
 }
 
 
@@ -1224,7 +1230,9 @@ sub LoadListHash
 sub Untaint 
 {
 	my ($s) = @_;
-  	if ($s =~ /^([\w \-\@\(\),\.\/<>\+]+)$/)
+	return $s;
+	
+  	if ($s =~ /^([\w \-\@\(\),\.<>\+]+)$/)
 	{
     	$s = $1;               # $data now untainted
   	} 
