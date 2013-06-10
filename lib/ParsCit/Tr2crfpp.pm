@@ -987,7 +987,7 @@ sub BuildTmpFile
 	my $SL = quotemeta(File::Util->SL);
 
     my $tmpfile	= $filename;
-    $tmpfile	=~ s/[\.$SL]//g;
+    $tmpfile	=~ s/[\.$SL: ]//g;
     $tmpfile	.= $$ . time;
 
 	# Untaint tmpfile variable
@@ -1009,7 +1009,7 @@ sub SplitReference
 {
 	my ($infile, $outfile) = @_;
 
-	unless (open(PIPE, "$crf_test -m $split_model_file $infile |")) 
+	unless (open(PIPE, "$crf_test -m $split_model_file \"$infile\" |")) 
 	{
 		Fatal("Could not open pipe from crf call: $!");
 		return;
@@ -1081,7 +1081,7 @@ sub Decode
 {
     my ($infile, $outfile) = @_;
 
-    unless (open(PIPE, "$crf_test -m $model_file $infile |")) 
+    unless (open(PIPE, "$crf_test -m $model_file \"$infile\" |")) 
 	{
 		Fatal("Could not open pipe from crf call: $!");
 		return;

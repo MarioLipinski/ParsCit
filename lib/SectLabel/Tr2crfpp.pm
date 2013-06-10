@@ -1073,7 +1073,7 @@ sub BuildTmpFile
 	
 	my $tmpfile = $filename;
 	my $SL = quotemeta(File::Util->SL);
-    $tmpfile 	=~ s/[\.$SL]//g;
+    $tmpfile 	=~ s/[\.$SL\: ]//g;
     $tmpfile 	.= $$ . 'XXXXXXXXXX';
     
 	# Untaint tmpfile variable
@@ -1247,7 +1247,7 @@ sub Untaint
 sub Execute 
 {
 	my ($cmd) = @_;
-  	$cmd = Untaint($cmd);
+# 	$cmd = Untaint($cmd);
   	system($cmd);
 }
 

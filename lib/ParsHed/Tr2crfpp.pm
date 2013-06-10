@@ -322,7 +322,7 @@ sub buildTmpFile {
     my ($filename) = @_;
     my $tmpfile = $filename;
 	my $SL = quotemeta(File::Util->SL);
-    $tmpfile =~ s/[\.$SL]//g;
+    $tmpfile =~ s/[\.$SL\:\ ]//g;
     $tmpfile .= $$ . time;
     # untaint tmpfile variable
     if ($tmpfile =~ /^([-\@\w.]+)$/) {
