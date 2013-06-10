@@ -50,7 +50,7 @@ sub PrepDataUnmarked
 	my ($omnidoc, $cit_addrs) = @_;
 
 	# Generate a temporary file
-	my $tmpfile	= BuildTmpFile("");
+	my $tmpfile	= File::Temp->new();
 
 	# Fetch te dictionary
 	ReadDict($dict_file);
@@ -682,7 +682,7 @@ sub PrepData
     my ($rcite_text, $filename) = @_;
 
 	# Generate a temporary file
-    my $tmpfile = BuildTmpFile($filename);
+    my $tmpfile = File::Temp->new();
 	
 	###
 	# Thang Mar 10: move inside the method, only load when running
@@ -977,22 +977,6 @@ sub PrepData
     close TMP;
 
 	# Finish prepare data for crfpp
-    return $tmpfile;
-}
-
-sub BuildTmpFile 
-{
-    my ($filename) = @_;
-	
-	my $SL = quotemeta(File::Util->SL);
-
-    my $tmpfile	= $filename;
-    $tmpfile	=~ s/[\.$SL: ]//g;
-    $tmpfile	.= $$ . time;
-
-	# Untaint tmpfile variable
-    if ($tmpfile =~ /^([-\@\w.]+)$/) { $tmpfile = $1; }
-    
     return $tmpfile;
 }
 

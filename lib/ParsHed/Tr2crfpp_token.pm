@@ -33,7 +33,7 @@ my %dict = ();
 
 sub prepData {
     my ($rCiteText, $filename) = @_;
-    my $tmpfile = buildTmpFile($filename);
+    my $tmpfile = File::Temp->new();
 
     # Thang Mar 2010: move inside the method; only load when running
     readDict($dictFile);
@@ -207,22 +207,6 @@ sub prepData {
     return $tmpfile;
 
 }  # prepData
-
-
-sub buildTmpFile {
-    my ($filename) = @_;
-    my $tmpfile = $filename;
-    $tmpfile =~ s/[\.\/]//g;
-    $tmpfile .= $$ . time;
-    # untaint tmpfile variable
-    if ($tmpfile =~ /^([-\@\w.]+)$/) {
-	$tmpfile = $1;
-    }
-    
-    # return $tmpfile;
-    return "/tmp/$tmpfile"; # Altered by Min (Thu Feb 28 13:08:59 SGT 2008)
-
-}  # buildTmpFile
 
 
 sub fatal {

@@ -388,9 +388,9 @@ sub AAMatchingImp
 	my ($features) = @_;	
 
 	# Temporary input file for CRF
-	my $infile	= BuildTmpFile("aa-input");
+	my $infile	= File::Temp->new();
 	# Temporary output file for CRF
-	my $outfile	= BuildTmpFile("aa-output");
+	my $outfile	= File::Temp->new();
 
 	my $output_handle = undef;
 	# Split and write to temporary input
@@ -473,9 +473,9 @@ sub AffiliationExtraction
 	my ($features, $rc_features) = @_;
 
 	# Temporary input file for CRF
-	my $infile	= BuildTmpFile("aff-input");
+	my $infile	= File::Temp->new();
 	# Temporary output file for CRF
-	my $outfile	= BuildTmpFile("aff-output");
+	my $outfile	= File::Temp->new();
 
 	my $output_handle = undef;
 	# Split and write to temporary input
@@ -703,9 +703,9 @@ sub AuthorExtraction
 	my ($features, $rc_features) = @_;
 
 	# Temporary input file for CRF
-	my $infile	= BuildTmpFile("aut-input");
+	my $infile	= File::Temp->new();
 	# Temporary output file for CRF
-	my $outfile	= BuildTmpFile("aut-output");
+	my $outfile	= File::Temp->new();
 
 	my $output_handle = undef;
 	# Split and write to temporary input
@@ -1910,23 +1910,6 @@ sub ReadDict
   	}
   
 	close ($dict_handle);
-}
-
-sub BuildTmpFile 
-{
-    my ($filename) = @_;
-	
-	my $tmpfile = $filename;
-    $tmpfile 	=~ s/[\.\/]//g;
-    $tmpfile 	.= $$ . time;
-    
-	# Untaint tmpfile variable
-    if ($tmpfile =~ /^([-\@\w.]+)$/) 
-	{
-		$tmpfile = $1;
-    }
-    
-    return "/tmp/$tmpfile"; # Altered by Min (Thu Feb 28 13:08:59 SGT 2008)
 }
 
 1;

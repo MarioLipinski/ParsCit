@@ -952,13 +952,3 @@ sub Execute
   	$cmd = Untaint($cmd);
 	system($cmd);
 }
-
-sub NewTmpFile 
-{
-	my (undef, $tmpFile) = tempfile('tempXXXXXXXX');
-  	chomp  $tmp_file;
-  	return $tmp_file;
-}
-
-
-

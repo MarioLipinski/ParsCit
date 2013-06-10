@@ -13,7 +13,7 @@ $tmpDir			= "tmp";
 $dictFile		= "resources/parsCitDict.txt";
 $funcFile		= "resources/sectLabel/funcWord";
 
-$crf_test = $ENV{'CRFPP_HOME'} ? File::Spec->catfile(($ENV{'CRFPP_HOME'}, 'bin'), 'crf_test.exe') : File::Spec->catfile(('crfpp'), 'crf_test.exe');
+$crf_test = $ENV{'CRFPP_HOME'} ? File::Spec->catfile(($ENV{'CRFPP_HOME'}, 'bin'), 'crf_test') : File::Spec->catfile(('crfpp'), 'crf_test');
 
 $modelFile		= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.model');
 $modelXmlFile	= File::Spec->catfile(('resources', 'sectLabel'), 'sectLabel.modelXml.v2');

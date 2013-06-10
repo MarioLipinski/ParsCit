@@ -50,7 +50,7 @@ my $tags = $ParsHed::Config::tags;
 
 sub prepData {
   my ($rCiteText, $filename) = @_;
-  my $tmpfile = buildTmpFile($filename);
+  my $tmpfile = File::Temp->new();
 
   # Thang Mar 2010: move these lines inside the method, only load when running
   readDict($dictFile);
@@ -318,23 +318,6 @@ sub generateTokenFeature {
   push(@{$feats}, $punct);		    # 22 = punctuation
 }
 
-sub buildTmpFile {
-    my ($filename) = @_;
-    my $tmpfile = $filename;
-	my $SL = quotemeta(File::Util->SL);
-    $tmpfile =~ s/[\.$SL\:\ ]//g;
-    $tmpfile .= $$ . time;
-    # untaint tmpfile variable
-    if ($tmpfile =~ /^([-\@\w.]+)$/) {
-	$tmpfile = $1;
-    }
-    
-    # return $tmpfile;
-    return tempfile($tmpfile . 'XXXX');
-
-}  # buildTmpFile
-
-
 sub fatal {
     my $msg = shift;
     print STDERR "Fatal Exception: $msg\n";
@@ -344,7 +327,7 @@ sub fatal {
 sub decode {
   my ($inFile, $outFile, $confLevel) = @_;
   
-  my $labeledFile = buildTmpFile($inFile);
+  my $labeledFile = File::Temp->new();
   if($confLevel){
     execute("$crf_test -v1 -m $modelFile $inFile > $labeledFile");
   } else {

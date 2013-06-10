@@ -161,7 +161,7 @@ sub ExtractTestFeatures
 {
 	my ($text_lines, $filename, $dict_file, $func_file, $config_file, $is_debug) = @_;
   	
-	my $tmpfile = BuildTmpFile($filename);
+	my $tmpfile = File::Temp->new();
   	Initialize($dict_file, $func_file, $config_file);
 
 	my $is_generate_template = 0;
@@ -1067,27 +1067,6 @@ sub GenerateFuncFeature
   	push(@{$templates}, "\n");
 }
 
-sub BuildTmpFile 
-{
-    my ($filename) = @_;
-	
-	my $tmpfile = $filename;
-	my $SL = quotemeta(File::Util->SL);
-    $tmpfile 	=~ s/[\.$SL\: ]//g;
-    $tmpfile 	.= $$ . 'XXXXXXXXXX';
-    
-	# Untaint tmpfile variable
-    if ($tmpfile =~ /^([-\@\w.]+)$/) 
-	{
-		$tmpfile = $1;
-    }
-    
-	my $tempfile;
-	(undef, $tempfile) = tempfile($tmpfile);
-    return $tempfile;
-}
-
-
 sub Fatal 
 {
     my $msg = shift;
@@ -1099,7 +1078,7 @@ sub Decode
 {
 	my ($infile, $model_file, $outfile) = @_;
   
-  	my $labeled_file = BuildTmpFile($infile);
+  	my $labeled_file = File::Temp->new();
   	Execute("$crf_test -v1 -m $model_file $infile > $labeled_file"); #  -v1: output confidence information
 
   	open (PIPE, "<:utf8", $labeled_file) || die "# crash\t\tCan't open \"$labeled_file\"";
